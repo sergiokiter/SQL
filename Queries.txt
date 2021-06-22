@@ -1,0 +1,46 @@
+
+--------------------------------1
+SELECT COUNT(*) FROM `flights`
+--------------------------------2
+SELECT Origin, CAST(ROUND(AVG(ArrDelay),4) AS DEC(10,4))  avg_promedio_llegadas
+FROM usairlineflights.flights 
+GROUP BY Origin
+ORDER BY Origin ASC;
+
+SELECT Origin, CAST(ROUND(AVG(DepDelay),4) AS DEC(10,4))  avg_promedio_salidas
+FROM usairlineflights.flights
+GROUP BY Origin
+ORDER BY Origin ASC;
+--------------------------------3
+SELECT Origin, colYear, colMonth, CAST(ROUND(AVG(ArrDelay),4) AS DEC(10,4))  avg_promedio_llegadas
+FROM usairlineflights.flights
+GROUP BY Origin, colYear, colMonth
+ORDER BY Origin ASC, colYear
+---------------------------------4
+SELECT 
+	D.City as 'City',
+	E.colYear as 'colYear',
+	E.colMonth as 'colMonth',
+	AVG(E.ArrDelay) as 'Promedio llegadas'
+FROM flights E
+LEFT JOIN usairports D
+ON E.Origin = D.IATA
+GROUP BY City, colYear
+ORDER BY City ASC, colYear ASC, colMonth
+
+---------------------------------5
+
+SELECT UniqueCarrier, colYear, colMonth, SUM(Cancelled) AS total
+FROM usairlineflights.flights
+GROUP BY UniqueCarrier, colYear
+ORDER BY total DESC, UniqueCarrier
+
+---------------------------------6
+
+SELECT TailNum, SUM(Distance)
+FROM usairlineflights.flights
+WHERE TailNum != "NA" AND TailNum != "#?NOMBRE?"
+GROUP BY TailNum
+ORDER BY SUM(Distance) DESC;
+
+
