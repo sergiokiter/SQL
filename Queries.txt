@@ -2,15 +2,11 @@
 --------------------------------1
 SELECT COUNT(*) FROM `flights`
 --------------------------------2
-SELECT Origin, CAST(ROUND(AVG(ArrDelay),4) AS DEC(10,4))  avg_promedio_llegadas
-FROM usairlineflights.flights 
-GROUP BY Origin
-ORDER BY Origin ASC;
 
-SELECT Origin, CAST(ROUND(AVG(DepDelay),4) AS DEC(10,4))  avg_promedio_salidas
-FROM usairlineflights.flights
-GROUP BY Origin
-ORDER BY Origin ASC;
+SELECT Origin, AVG(ArrDelay), AVG(DepDelay)
+FROM Flights
+GROUP BY Origin;
+
 --------------------------------3
 SELECT Origin, colYear, colMonth, CAST(ROUND(AVG(ArrDelay),4) AS DEC(10,4))  avg_promedio_llegadas
 FROM usairlineflights.flights
@@ -30,8 +26,11 @@ ORDER BY City ASC, colYear ASC, colMonth
 
 ---------------------------------5
 
+
 SELECT UniqueCarrier, colYear, colMonth, SUM(Cancelled) AS total
 FROM usairlineflights.flights
+INNER JOIN usairlineflights.usairports
+ON UniqueCarrier = IATA
 GROUP BY UniqueCarrier, colYear
 ORDER BY total DESC, UniqueCarrier
 
